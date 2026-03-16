@@ -3,6 +3,7 @@ services:
     build: .
     environment:
       - YNAB_API_KEY=${YNAB_API_KEY}
+      - MCP_BEARER_TOKEN=${MCP_BEARER_TOKEN}
     restart: unless-stopped
 
   tunnel:
