@@ -1,0 +1,22 @@
+services:
+  ynab-mcp:
+    build: .
+    environment:
+      - YNAB_API_KEY=${YNAB_API_KEY}
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --url http://ynab-mcp:8000 --no-tls-verify run --token ${Cloudflare_Token}
+    depends_on:
+      - ynab-mcp
+    restart: unless-stopped
+    # networks:
+    #   - proxy
+    # command: tunnel run --token 
+    volumes:
+      - ./data:/home/nonroot/.cloudflared/
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
