@@ -41,7 +41,13 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#claudeai-web-connectors-recommended">Claude.ai web connectors</a></li>
+        <li><a href="#claude-desktop">Claude Desktop</a></li>
+      </ul>
+    </li>
     <li><a href="#available-tools">Available Tools</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -63,6 +69,7 @@ YNAB MCP is a [Model Context Protocol](https://modelcontextprotocol.io) server t
 * [![Docker][Docker]][Docker-url]
 * [![Cloudflare][Cloudflare]][Cloudflare-url]
 * [![YNAB][YNAB]][YNAB-url]
+* [![GHCR][GHCR]][GHCR-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -88,10 +95,16 @@ YNAB MCP is a [Model Context Protocol](https://modelcontextprotocol.io) server t
    cp .env.example .env
    ```
 
-3. Edit `.env` with your tokens
+3. Edit `.env` with your credentials
    ```env
    YNAB_API_KEY=your_ynab_personal_access_token_here
    Cloudflare_Token=your_cloudflare_tunnel_token_here
+   MCP_BEARER_TOKEN=your_random_secret_token_here
+   ```
+
+   Generate a secure `MCP_BEARER_TOKEN` with:
+   ```sh
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
    ```
 
 4. Start the server
@@ -101,22 +114,44 @@ YNAB MCP is a [Model Context Protocol](https://modelcontextprotocol.io) server t
 
 The MCP server will be available at `http://localhost:8000` locally, or via your Cloudflare Tunnel URL remotely.
 
+> **Tip:** A pre-built Docker image is published to the GitHub Container Registry on every push to `master`. You can use it instead of building locally by replacing `build: .` with `image: ghcr.io/npab19/ynab-mcp:latest` in `docker-compose.yml`.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE -->
 ## Usage
 
-Once running, configure your MCP client (e.g. Claude) to connect to the server's streamable HTTP endpoint:
+The server requires authentication on all requests. The `MCP_BEARER_TOKEN` you set in `.env` is used to authenticate MCP clients.
+
+### Claude.ai web connectors (recommended)
+
+Add a custom connector in Claude.ai settings with the URL:
 
 ```
-http://localhost:8000/mcp
+https://<your-tunnel-url>/mcp?api_key=<MCP_BEARER_TOKEN>
 ```
 
-Or if using a Cloudflare Tunnel:
+This syncs across all your devices automatically.
 
+### Claude Desktop
+
+Edit `%APPDATA%\Claude\claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "ynab": {
+      "type": "http",
+      "url": "https://<your-tunnel-url>/mcp",
+      "headers": {
+        "Authorization": "Bearer <MCP_BEARER_TOKEN>"
+      }
+    }
+  }
+}
 ```
-https://<your-tunnel-subdomain>.trycloudflare.com/mcp
-```
+
+Restart Claude Desktop after saving.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -144,6 +179,8 @@ The server exposes tools across the following YNAB resource categories:
 - [x] Streamable HTTP transport
 - [x] Cloudflare Tunnel support
 - [x] Core YNAB resource coverage (budgets, accounts, transactions, categories, months, payees, scheduled transactions)
+- [x] Bearer token authentication (Authorization header + ?api_key query param)
+- [x] Docker image published to GitHub Container Registry (GHCR)
 - [ ] Write support (create/update transactions)
 - [ ] Category budget assignment tools
 
@@ -199,3 +236,5 @@ Project Link: [https://github.com/Npab19/ynab-mcp](https://github.com/Npab19/yna
 [Cloudflare-url]: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
 [YNAB]: https://img.shields.io/badge/YNAB-678D41?style=for-the-badge&logo=ynab&logoColor=white
 [YNAB-url]: https://api.ynab.com/
+[GHCR]: https://img.shields.io/badge/GHCR-181717?style=for-the-badge&logo=github&logoColor=white
+[GHCR-url]: https://github.com/Npab19/ynab-mcp/pkgs/container/ynab-mcp
