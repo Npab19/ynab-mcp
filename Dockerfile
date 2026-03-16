@@ -1,6 +1,9 @@
-FROM python:3.12-slim
+FROM python:3.12.10-slim
 
 WORKDIR /app
+
+# Create a non-root user to run the application
+RUN useradd --create-home --shell /bin/bash appuser
 
 # Copy all project files
 COPY pyproject.toml .
@@ -8,6 +11,9 @@ COPY src/ src/
 
 # Install the package and its dependencies
 RUN pip install --no-cache-dir .
+
+# Switch to non-root user
+USER appuser
 
 EXPOSE 8000
 

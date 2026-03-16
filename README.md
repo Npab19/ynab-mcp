@@ -6,6 +6,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -51,6 +52,7 @@
     <li><a href="#available-tools">Available Tools</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -201,6 +203,13 @@ Contributions are welcome! If you have a suggestion, please fork the repo and cr
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- CONTACT -->
 ## Contact
 
@@ -228,6 +237,8 @@ Project Link: [https://github.com/Npab19/ynab-mcp](https://github.com/Npab19/yna
 [stars-url]: https://github.com/Npab19/ynab-mcp/stargazers
 [issues-shield]: https://img.shields.io/github/issues/Npab19/ynab-mcp.svg?style=for-the-badge
 [issues-url]: https://github.com/Npab19/ynab-mcp/issues
+[license-shield]: https://img.shields.io/github/license/Npab19/ynab-mcp.svg?style=for-the-badge
+[license-url]: https://github.com/Npab19/ynab-mcp/blob/master/LICENSE
 [Python]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white
 [Python-url]: https://python.org
 [Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
